@@ -1,0 +1,23 @@
+<div>
+    <p>
+        {{ question.text }}
+    </p>
+    {% if message %}
+        <p class="error-summary">
+            {{ message }}
+        </p>
+    {% endif %}
+    <div>
+        {{ use('yii/widgets/ActiveForm') }}
+        {% set form = active_form_begin({
+            'id' : 'answers-form',
+            'options' : {'class' : 'form-horizontal'},
+        }) %}
+        {{ form.field(answersModel, 'answers[]').checkboxList(question.availableAnswers) | raw }}
+
+        <div class="form-group">
+            <input type="submit" value="Go!" class="btn btn-primary"/>
+        </div>
+        {{ active_form_end() }}
+    </div>
+</div>

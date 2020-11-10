@@ -1,0 +1,55 @@
+<h1>Your score: {{ quiz.score }} of {{ quiz.questions|length }}</h1>
+{% for question in quiz.questions %}
+    <div style="padding-bottom:40px">
+        <p>{{ question.text }}</p>
+        <p style="color: {% if question.correct %}green{% else %}red{% endif %}">
+            <b>You answered {% if question.correct %}correctly{% else %}incorrectly{% endif %}</b>
+        </p>
+        <ul>
+            {% for answer in question.answers %}
+                <li>
+                    {{ answer.text }}
+                    <span style="color: {% if answer.correct %}green{% else %}red{% endif %}">{% if answer.usersAnswer %}&laquo; YOUR ANSWER{% endif %}</span>
+                    {% if not question.correct and answer.correct %}
+                        <span style="color: green"> &laquo; CORRECT ANSWER</span>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endfor %}
+
+<div>
+    <div>
+        <h2>Would you like your name in the score list?</h2>
+        {{ use('yii/widgets/ActiveForm') }}
+        {% set form = active_form_begin({
+            'id' : 'username-form',
+            'options' : {'class' : 'form-horizontal'},
+        }) %}
+        {{ form.field(usernameModel, 'username') | raw }}
+
+        <div class="form-group">
+            <input type="submit" value="Go!" class="btn btn-primary"/>
+        </div>
+        {{ active_form_end() }}
+    </div>
+    <table style="border-spacing: 10px; border-collapse: separate;">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Score</th>
+            <th>Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for score in scores %}
+            <tr>
+                <td>{{ score.name }}</td>
+                <td>{{ score.score }}</td>
+                <td>{{ score.dateFinished }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
