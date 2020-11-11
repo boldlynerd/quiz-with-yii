@@ -1,14 +1,14 @@
 <h1>Your score: {{ quiz.score }} of {{ quiz.questions|length }}</h1>
 {% for question in quiz.questions %}
     <div style="padding-bottom:40px">
-        <p>{{ question.text }}</p>
+        <p>{{ question.text | striptags('<pre>') | raw}}</p>
         <p style="color: {% if question.correct %}green{% else %}red{% endif %}">
             <b>You answered {% if question.correct %}correctly{% else %}incorrectly{% endif %}</b>
         </p>
         <ul>
             {% for answer in question.answers %}
                 <li>
-                    {{ answer.text }}
+                    {{ answer.text | striptags('<pre>') | raw}}
                     <span style="color: {% if answer.correct %}green{% else %}red{% endif %}">{% if answer.usersAnswer %}&laquo; YOUR ANSWER{% endif %}</span>
                     {% if not question.correct and answer.correct %}
                         <span style="color: green"> &laquo; CORRECT ANSWER</span>

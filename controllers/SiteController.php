@@ -83,7 +83,7 @@ class SiteController extends Controller
 
         if ($question) {
             return $this->render('index.twig', [
-                'question'     => $question,
+                'question'     => $this->cleanForView($question),
                 'answersModel' => $answersModel,
             ]);
         }
@@ -100,6 +100,43 @@ class SiteController extends Controller
             'scores'        => $quizService->getTopTenScores(),
             'usernameModel' => $usernameModel
         ]);
+    }
+
+    private function cleanForView(\app\models\ActiveQuestion $question)
+    {
+        if ($question->cleaned) {
+            return $question;
+        }
+
+        //only the <pre> tag is allowed and we need to htmlencode everything inside it
+        $question->text = $this->escapePreInText($question->text);
+
+        $cleanedAnswers = [];
+        foreach ($question->answers as $answer) {
+            $answer->text     = $this->escapePreInText($answer->text);
+            $cleanedAnswers[] = $answer;
+        }
+
+        $question->answers = $cleanedAnswers;
+        $question->cleaned = true;
+
+        return $question;
+    }
+
+    /**
+     * @param string $text
+     *
+     * @return string
+     */
+    private function escapePreInText($text)
+    {
+        return preg_replace_callback(
+            '~<pre>(.*)</pre>~ms',
+            function($match) {
+                return '<pre>' . htmlentities($match[1]) . '</pre>';
+            },
+            $text
+        );
     }
 }
 

@@ -1,6 +1,6 @@
 <div>
     <p>
-        {{ question.text }}
+        {{ question.text | striptags('<pre>') | raw}}
     </p>
     {% if message %}
         <p class="error-summary">
@@ -11,10 +11,11 @@
         {{ use('yii/widgets/ActiveForm') }}
         {% set form = active_form_begin({
             'id' : 'answers-form',
-            'options' : {'class' : 'form-horizontal'},
+            'options' : {'class' : 'form-inline'},
         }) %}
-        {{ form.field(answersModel, 'answers[]').checkboxList(question.availableAnswers) | raw }}
-
+        {% for id,answer in question.availableAnswers %}
+            <p><input type="checkbox" name="AnswersForm[answers][]" value="{{ id }}"> {{ answer | striptags('<pre>') | raw }}</p>
+        {% endfor %}
         <div class="form-group">
             <input type="submit" value="Go!" class="btn btn-primary"/>
         </div>

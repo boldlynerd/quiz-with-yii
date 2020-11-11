@@ -12,6 +12,7 @@ use yii\base\Model;
  * @property Answer[] $answers
  * @property Answer[] $chosenAnswers
  * @property array    $availableAnswers
+ * @property boolean  $cleaned
  */
 class ActiveQuestion extends Model
 {
@@ -22,4 +23,6 @@ class ActiveQuestion extends Model
     public $chosenAnswers;
 
     public $availableAnswers;
+
+    public $cleaned = false;
 }
