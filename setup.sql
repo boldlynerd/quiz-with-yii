@@ -1,13 +1,9 @@
 CREATE DATABASE `yii2quiz`;
 
-CREATE TABLE `answer` (
+CREATE TABLE `quiz` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `questionId` int unsigned DEFAULT NULL,
-  `text` text,
-  `correct` int DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `question_idx` (`questionId`),
-  CONSTRAINT `question` FOREIGN KEY (`questionId`) REFERENCES `question` (`id`) ON DELETE CASCADE
+  `name` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `question` (
@@ -19,10 +15,14 @@ CREATE TABLE `question` (
   CONSTRAINT `quizId` FOREIGN KEY (`quizId`) REFERENCES `quiz` (`id`)
 );
 
-CREATE TABLE `quiz` (
+CREATE TABLE `answer` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `questionId` int unsigned DEFAULT NULL,
+  `text` text,
+  `correct` int DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `question_idx` (`questionId`),
+  CONSTRAINT `question` FOREIGN KEY (`questionId`) REFERENCES `question` (`id`) ON DELETE CASCADE
 );
 
 CREATE TABLE `score` (
