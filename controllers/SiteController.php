@@ -66,6 +66,7 @@ class SiteController extends Controller
     public function actionIndex()
     {
         $container    = new Container;
+        /** @var QuizService $quizService */
         $quizService  = $container->get(QuizService::class, [self::DEFAULT_QUIZ_ID]);
         $answersModel = new AnswersForm();
         $answersModel->load(Yii::$app->request->post());

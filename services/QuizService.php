@@ -110,7 +110,7 @@ class QuizService
     public function questionWasAnswered(AnswersForm $answersModel)
     {
         $postData = Yii::$app->request->post();
-        if (empty($postData)) {
+        if (empty($postData) || $this->session->get('finished')) {
             return false;
         }
 
@@ -121,7 +121,6 @@ class QuizService
         }
 
         return true;
-
     }
 
     /**
@@ -206,6 +205,8 @@ class QuizService
         if (!is_int($completedQuiz['score'])) {
             return;
         }
+
+        $this->session->set('finished', true);
 
         if ($this->session->get('saved')) {
             $postData = Yii::$app->request->post();
