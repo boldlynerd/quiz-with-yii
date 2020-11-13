@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\ActiveQuestion;
 use app\models\AnswersForm;
 use app\models\UsernameForm;
 use app\services\QuizService;
@@ -102,7 +103,12 @@ class SiteController extends Controller
         ]);
     }
 
-    private function cleanForView(\app\models\ActiveQuestion $question)
+    /**
+     * @param ActiveQuestion $question
+     *
+     * @return ActiveQuestion
+     */
+    private function cleanForView(ActiveQuestion $question)
     {
         if ($question->cleaned) {
             return $question;

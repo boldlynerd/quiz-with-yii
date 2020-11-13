@@ -13,6 +13,7 @@ use yii\base\Model;
  * @property Answer[] $chosenAnswers
  * @property array    $availableAnswers
  * @property boolean  $cleaned
+ * @property boolean  $multipleChoice
  */
 class ActiveQuestion extends Model
 {
@@ -24,5 +25,7 @@ class ActiveQuestion extends Model
 
     public $availableAnswers;
 
-    public $cleaned = false;
+    public $cleaned        = false;
+
+    public $multipleChoice = true;
 }

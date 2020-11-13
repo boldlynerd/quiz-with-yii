@@ -2,18 +2,20 @@
 
 namespace app\models;
 
-use yii\db\ActiveRecord;
+use Yii;
 
 /**
  * This is the model class for table "question".
  *
- * @property int         $id
- * @property int|null    $quizId
+ * @property int $id
+ * @property int|null $quizId
  * @property string|null $text
- * @property Answer[]    $answers
- * @property Quiz        $quiz
+ * @property int|null $multipleChoice
+ *
+ * @property Answer[] $answers
+ * @property Quiz $quiz
  */
-class Question extends ActiveRecord
+class Question extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -29,7 +31,7 @@ class Question extends ActiveRecord
     public function rules()
     {
         return [
-            [['quizId'], 'integer'],
+            [['quizId', 'multipleChoice'], 'integer'],
             [['text'], 'string'],
             [['quizId'], 'exist', 'skipOnError' => true, 'targetClass' => Quiz::className(), 'targetAttribute' => ['quizId' => 'id']],
         ];
@@ -41,9 +43,10 @@ class Question extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id'     => 'ID',
+            'id' => 'ID',
             'quizId' => 'Quiz ID',
-            'text'   => 'Text',
+            'text' => 'Text',
+            'multipleChoice' => 'Multiple Choice',
         ];
     }
 

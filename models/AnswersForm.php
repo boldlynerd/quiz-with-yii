@@ -13,8 +13,6 @@ class AnswersForm extends Model {
     public function rules()
     {
         return [
-            // answers is required
-            [['answers'], 'required']
         ];
     }
 }

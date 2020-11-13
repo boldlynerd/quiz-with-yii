@@ -65,8 +65,9 @@ class QuizService
 
         $question = array_pop($quiz->questions);
 
-        $activeQuestion       = new ActiveQuestion();
-        $activeQuestion->text = $question->text;
+        $activeQuestion                 = new ActiveQuestion();
+        $activeQuestion->text           = $question->text;
+        $activeQuestion->multipleChoice = $question->multipleChoice;
 
         $answers = $question->answers;
         shuffle($answers);
@@ -113,13 +114,14 @@ class QuizService
             return false;
         }
 
-        if ($answersModel->validate()) {
+        if (isset($postData['AnswersForm']['answers'])) {
             $this->recordAnswers($postData['AnswersForm']['answers']);
-
-            return true;
+        } else {
+            $this->recordAnswers([]);
         }
 
-        return false;
+        return true;
+
     }
 
     /**
@@ -161,6 +163,9 @@ class QuizService
                 ];
                 if (!$answeredCorrectly) {
                     $answeredQuestion['correct'] = false;
+                    if (count($question->chosenAnswers) === 0) {
+                        $answeredQuestion['skipped'] = true;
+                    }
                 }
             }
             if ($answeredQuestion['correct']) {

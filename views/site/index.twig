@@ -13,11 +13,14 @@
             'id' : 'answers-form',
             'options' : {'class' : 'form-inline'},
         }) %}
+        <ol>
         {% for id,answer in question.availableAnswers %}
-            <p><input type="checkbox" name="AnswersForm[answers][]" value="{{ id }}"> {{ answer | striptags('<pre>') | raw }}</p>
+            <li><input type="{% if question.multipleChoice %}checkbox{% else %}radio{% endif %}" name="AnswersForm[answers][]" value="{{ id }}" id="answer{{ id }}"> <label for="answer{{ id }}">{{ answer | striptags('<pre>') | raw }}</label></li>
         {% endfor %}
+        </ol>
         <div class="form-group">
             <input type="submit" value="Go!" class="btn btn-primary"/>
+            <input type="submit" value="Skip" class="btn btn-secondary"/>
         </div>
         {{ active_form_end() }}
     </div>
