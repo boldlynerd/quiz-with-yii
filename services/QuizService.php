@@ -148,27 +148,33 @@ class QuizService
         foreach ($quiz->answeredQuestions as $question) {
             $answeredQuestion = [
                 'text'    => $question->text,
-                'correct' => true
+                'correct' => true,
+                'partiallyCorrect' => false
             ];
-            /** @var Answer $answer */
-            foreach ($question->answers as $answer) {
-                $answeredCorrectly = $this->checkIfAnswerCorrect($answer->id, $answer->correct, $question->chosenAnswers);
-
-                $answeredQuestion['answers'][] = [
-                    'text'              => $answer->text,
-                    'correct'           => $answer->correct,
-                    'answeredCorrectly' => $answeredCorrectly,
-                    'usersAnswer'       => in_array($answer->id, $question->chosenAnswers)
-                ];
-                if (!$answeredCorrectly) {
-                    $answeredQuestion['correct'] = false;
-                    if (count($question->chosenAnswers) === 0) {
-                        $answeredQuestion['skipped'] = true;
+            if (count($question->chosenAnswers) === 0) {
+                $answeredQuestion['skipped'] = true;
+            } else {
+                /** @var Answer $answer */
+                foreach ($question->answers as $answer) {
+                    $answeredCorrectly = $this->checkIfAnswerCorrect($answer->id, $answer->correct, $question->chosenAnswers);
+                    $answeredQuestion['answers'][] = [
+                        'text'              => $answer->text,
+                        'correct'           => $answer->correct,
+                        'answeredCorrectly' => $answeredCorrectly,
+                        'usersAnswer'       => in_array($answer->id, $question->chosenAnswers)
+                    ];
+                    if (!$answeredCorrectly) {
+                        $answeredQuestion['correct'] = false;
+                    } elseif ($answer->correct) {
+                        $answeredQuestion['partiallyCorrect'] = true;
                     }
                 }
-            }
-            if ($answeredQuestion['correct']) {
-                $completedQuiz['score']++;
+
+                if ($answeredQuestion['correct']) {
+                    $completedQuiz['score']++;
+                } elseif ($answeredQuestion['partiallyCorrect']) {
+                    $completedQuiz['score'] += .5;
+                }
             }
             $completedQuiz['questions'][] = $answeredQuestion;
         }

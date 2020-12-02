@@ -9,7 +9,7 @@ use Yii;
  *
  * @property int $id
  * @property int|null $quizId
- * @property int|null $score
+ * @property float|null $score
  * @property string|null $sessionId
  * @property string|null $name
  * @property string|null $dateFinished

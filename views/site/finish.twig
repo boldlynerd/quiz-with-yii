@@ -2,11 +2,11 @@
 {% for question in quiz.questions %}
     <div style="padding-bottom:40px">
         <p>{{ question.text | striptags('<pre>') | raw }}</p>
-        <p style="color: {% if question.correct %}green{% else %}red{% endif %}">
+        <p style="color: {% if question.correct %}green{% elseif question.partiallyCorrect %}darkorange{% else %}red{% endif %}">
             {% if question.skipped %}
                 <b>You skipped this one</b>
             {% else %}
-                <b>You answered {% if question.correct %}correctly{% else %}incorrectly{% endif %}</b>
+                <b>You answered {% if question.correct %}correctly{% elseif question.partiallyCorrect %}partially correctly{% else %}incorrectly{% endif %}</b>
             {% endif %}
         </p>
         <ul>
